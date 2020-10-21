@@ -69,28 +69,58 @@ public class Controller extends chemotaxis.sim.Controller {
             // red_test.y = 41;
             // myTurnPath.set(0, red_test);
             // this.turnSignals.add(ChemicalType.RED);
-            /*
-             * int diagEnd = 0; int diagStart = -1; boolean endedDiagonal = false; int k =
-             * 0; int diagX = 0; int diagY = 0; Point secondToLast; while (k <
-             * this.myTurnPath.size()) { if (this.myTurnPath.size() > 1) { if
-             * (isDiagonalPath(k)) { if (diagStart == -1) { diagStart = k; } diagEnd++;
-             * diagX = this.myTurnPath.get(diagStart + 1).x; diagY =
-             * this.myTurnPath.get(diagStart + 1).y; } else { diagEnd = k; if (diagStart >
-             * -1) { break; } } } k++; } if (diagStart == -1) { diagStart = 0; } if (diagEnd
-             * - diagStart < 2) { diagEnd = 0; diagStart = 0; } for (int j = diagStart; j <
-             * diagEnd - 1; j++) { this.myTurnPath.remove(diagStart); }
-             * 
-             * for (int i = 0; i < myTurnPath.size(); i++) { if (i == myTurnPath.size() - 1
-             * && diagEnd != 0) { this.myTurnPath.set(diagStart, new Point(diagX, diagY));
-             * this.turnSignals.add(diagStart, ChemicalType.RED); break; }
-             * this.turnSignals.add(ChemicalType.BLUE); }
-             */
-            ArrayList<Point> copy = new ArrayList<Point>(this.myTurnPath);
-            addDiagonal();
-            while (!copy.equals(this.myTurnPath)) {
-                copy = new ArrayList<Point>(this.myTurnPath);
-                addDiagonal();
+
+            int diagEnd = 0;
+            int diagStart = -1;
+            boolean endedDiagonal = false;
+            int k = 0;
+            int diagX = 0;
+            int diagY = 0;
+            Point secondToLast;
+            while (k < this.myTurnPath.size()) {
+                if (this.myTurnPath.size() > 1) {
+                    if (isDiagonalPath(k)) {
+                        if (diagStart == -1) {
+                            diagStart = k;
+                        }
+                        diagEnd++;
+                        diagX = this.myTurnPath.get(diagStart + 1).x;
+                        diagY = this.myTurnPath.get(diagStart + 1).y;
+                    } else {
+                        diagEnd = k;
+                        if (diagStart > -1) {
+                            break;
+                        }
+                    }
+                }
+                k++;
             }
+            if (diagStart == -1) {
+                diagStart = 0;
+            }
+            if (diagEnd - diagStart < 2) {
+                diagEnd = 0;
+                diagStart = 0;
+            }
+            for (int j = diagStart; j < diagEnd - 1; j++) {
+                this.myTurnPath.remove(diagStart);
+            }
+
+            for (int i = 0; i < myTurnPath.size(); i++) {
+                if (i == myTurnPath.size() - 1 && diagEnd != 0) {
+                    this.myTurnPath.set(diagStart, new Point(diagX, diagY));
+                    this.turnSignals.add(diagStart, ChemicalType.RED);
+                    break;
+                }
+                this.turnSignals.add(ChemicalType.BLUE);
+            }
+
+            ArrayList<Point> copy = new ArrayList<Point>(this.myTurnPath);
+            // addDiagonal();
+            /*
+             * while (!copy.equals(this.myTurnPath)) { copy = new
+             * ArrayList<Point>(this.myTurnPath); addDiagonal(); }
+             */
             // System.out.println("Size: " + this.allKPaths.keySet().size() + "\n" +
             // this.allKPaths.keySet());
             // System.out.println("TURNS: \n"+myTurnPath + "\n \n");
@@ -126,8 +156,8 @@ public class Controller extends chemotaxis.sim.Controller {
         if (!isPathsEquivalent(this.myPath,
                 getOptimalPath(currentLocation, grid, this.myAllKPaths, chemicalsRemaining, false))
                 && currentTurn != 1) {
-            System.out.println(currentLocation);
-            System.out.println("Paths unequal\n");
+    //        System.out.println(currentLocation);
+    //        System.out.println("Paths unequal\n");
             // System.out.println(this.myTurnPath + "\n");
             // System.out.println(getTurns(getOptimalPath(currentLocation, grid,
             // this.myAllKPaths, chemicalsRemaining)) + "\n");
@@ -161,7 +191,7 @@ public class Controller extends chemotaxis.sim.Controller {
                 chemicalPlacement.chemicals = chemicals;
                 chemicalPlacement.location = myTurnPath.get(0);
                 this.myTurnPath.remove(0);
-                // turnSignals.remove(0);
+                // this.turnSignals.remove(0);
             }
         }
 
@@ -178,7 +208,7 @@ public class Controller extends chemotaxis.sim.Controller {
         Point secondToLast;
         while (k < this.myTurnPath.size()) {
             if (this.myTurnPath.size() > 1) {
-                if (isDiagonalPath(k)) {
+                if (isDiagonalPath(k) && this.turnSignals.get(k) != ChemicalType.RED) {
                     if (diagStart == -1) {
                         diagStart = k;
                     }

@@ -75,7 +75,7 @@ public class Agent extends chemotaxis.sim.Agent {
                 agentMove.directionType = getDirectionFromByte(previousState);
             }
             agentMove.currentState = getDirectionByte(agentMove.directionType);
-        }
+        } 
         return agentMove;
     }
 
