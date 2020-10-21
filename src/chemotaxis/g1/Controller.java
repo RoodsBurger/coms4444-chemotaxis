@@ -92,9 +92,6 @@ public class Controller extends chemotaxis.sim.Controller {
             if (diagStart == -1) {
                 diagStart = 0;
             }
-            if (diagEnd > 0) {
-                System.out.println("DIAG ENDD " + diagEnd);
-            }
             if (diagEnd - diagStart < 2) {
                 diagEnd = 0;
                 diagStart = 0;
@@ -114,7 +111,7 @@ public class Controller extends chemotaxis.sim.Controller {
             // System.out.println("Size: " + this.allKPaths.keySet().size() + "\n" +
             // this.allKPaths.keySet());
             // System.out.println(this.allKPaths.keySet().contains(start));
-            System.out.println("TURNS: \n" + myTurnPath + "\n \n");
+            // System.out.println("TURNS: \n" + myTurnPath + "\n \n");
         }
         // if(!isPathsEquivalent(this.myPath, getOptimalPath(currentLocation, grid,
         // this.myAllKPaths, chemicalsRemaining))) {
@@ -127,7 +124,25 @@ public class Controller extends chemotaxis.sim.Controller {
         // chemicalsRemaining);
         // this.myTurnPath = getTurns(this.myPath);
         // }
-
+        if(this.budget < this.myTurnPath.size()/2 && this.budget > 0){
+            System.out.println("LESS");
+            int spacing = (this.start.x - this.target.x)/30 + 1;
+            if(this.budget < spacing){
+                spacing = this.budget;
+            }
+            int difference = this.myTurnPath.size()/spacing;
+            int index = 0;
+            while(spacing > 0 && index < this.myTurnPath.size()){
+                int indexNew = index + difference;
+                for(int i = index; i < indexNew; i++){
+                    this.myTurnPath.remove(index);
+                }
+                spacing --;
+            }
+            for(int i = 0; i < this.myTurnPath.size(); i++){
+                this.turnSignals.add(ChemicalType.GREEN);
+            }
+        }
         ChemicalPlacement chemicalPlacement = new ChemicalPlacement();
 
         List<ChemicalType> chemicals = new ArrayList<>();
@@ -141,6 +156,7 @@ public class Controller extends chemotaxis.sim.Controller {
             } else if (closeToTurn(currentLocation, myTurnPath)) {
                 chemicalPlacement.chemicals = chemicals;
                 chemicalPlacement.location = myTurnPath.get(0);
+                System.out.println("CLOSE");
                 myTurnPath.remove(0);
                 turnSignals.remove(0);
             }
@@ -154,11 +170,11 @@ public class Controller extends chemotaxis.sim.Controller {
             if (myTurnPath.get(k).x == myTurnPath.get(k + 1).x || myTurnPath.get(k).y == myTurnPath.get(k + 1).y) {
                 if (Math.abs(myTurnPath.get(k).x - myTurnPath.get(k + 1).x) == 1.0
                         || Math.abs(myTurnPath.get(k).y - myTurnPath.get(k + 1).y) == 1.0) {
-                    System.out.println("TRUE");
+                    //System.out.println("TRUE");
                     return true;
                 }
             }
-            System.out.println("FALSE");
+            //System.out.println("FALSE");
         }
         return false;
     }
@@ -174,6 +190,13 @@ public class Controller extends chemotaxis.sim.Controller {
         } else if (this.turnSignals.get(0) == ChemicalType.RED) {
             for (Point point : turnPath) {
                 if (Math.abs(point.x - cur.x) == 1 && Math.abs(point.y - cur.y) == 1)
+                    return true;
+            }
+        } else if (this.turnSignals.get(0) == ChemicalType.GREEN) {
+            for (Point point : turnPath) {
+                if (point.x == cur.x && Math.abs(point.y - cur.y) <= 15)
+                    return true;
+                else if (point.y == cur.y && Math.abs(point.x - cur.x) <= 15)
                     return true;
             }
         }

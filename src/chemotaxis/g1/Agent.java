@@ -40,8 +40,8 @@ public class Agent extends chemotaxis.sim.Agent {
         Move agentMove = new Move();
         DirectionType dir = getBlueDirection(neighborMap, 0.99);
         DirectionType[] dir2 = getRedDirection(neighborMap, 0.2);
-        System.out.println(dir.toString() + " " + Arrays.toString(dir2));
-        System.out.println("RANDOM " + randomNum);
+     //   System.out.println(dir.toString() + " " + Arrays.toString(dir2));
+     //   System.out.println("RANDOM " + randomNum);
         if( dir == DirectionType.CURRENT && dir2[0] == dir2[1] && dir2[1] == DirectionType.CURRENT){
             Byte stateVal = (byte)((int)Math.abs(randomNum%15) + 1);
             agentMove.currentState = stateVal;
@@ -62,12 +62,12 @@ public class Agent extends chemotaxis.sim.Agent {
             }else if (dir2[0] != DirectionType.CURRENT && dir2[1] != DirectionType.CURRENT) {
                 agentMove.currentState = getInitialDiagonalDirectionByte(dir2[0], dir2[1]);
                 agentMove.directionType = getInitiationDiagonalDirection(agentMove.currentState);
-                System.out.println(agentMove.currentState.toString() + " " + agentMove.directionType.toString());
+            //    System.out.println(agentMove.currentState.toString() + " " + agentMove.directionType.toString());
                 return agentMove;
             } else if(dir2[0] != DirectionType.CURRENT && dir2[1] == DirectionType.CURRENT){
                 agentMove.currentState = getInitialDiagonalDirectionByte(dir2[0], dir2[1]);
                 agentMove.directionType = dir2[0];
-                System.out.println(agentMove.currentState.toString() + " " + agentMove.directionType.toString());
+            //    System.out.println(agentMove.currentState.toString() + " " + agentMove.directionType.toString());
                 return agentMove;
             } 
             agentMove.directionType = getDirectionFromByte(previousState);
@@ -102,7 +102,7 @@ public class Agent extends chemotaxis.sim.Agent {
             }
             ;
         }
-        System.out.println(Arrays.toString(absoluteRed));
+    //    System.out.println(Arrays.toString(absoluteRed));
         return absoluteRed;
     }
 
