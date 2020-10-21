@@ -121,15 +121,8 @@ public class Controller extends chemotaxis.sim.Controller {
              * while (!copy.equals(this.myTurnPath)) { copy = new
              * ArrayList<Point>(this.myTurnPath); addDiagonal(); }
              */
-            // System.out.println("Size: " + this.allKPaths.keySet().size() + "\n" +
-            // this.allKPaths.keySet());
-            // System.out.println("TURNS: \n"+myTurnPath + "\n \n");
-            // Point red_test = myTurnPath.get(0);
-            // System.out.println(red_test.x + " " + red_test.y);
-            // red_test.x = 16;
-            // red_test.y = 41;
-            // myTurnPath.set(0, red_test);
-            this.turnSignals.add(ChemicalType.BLUE);
+
+    //        this.turnSignals.add(ChemicalType.BLUE);
             // for (int i = 0; i < myTurnPath.size() - 1; i++) {
             // this.turnSignals.add(ChemicalType.BLUE);
             // }
@@ -287,8 +280,8 @@ public class Controller extends chemotaxis.sim.Controller {
         List<Point> p1 = new ArrayList<>(original);
         List<Point> p2 = new ArrayList<>(new_path);
 
-        System.out.println("ORIGINAL: " + p1 + "\n");
-        System.out.println("NEW: " + p2 + "\n");
+    //    System.out.println("ORIGINAL: " + p1 + "\n");
+    //    System.out.println("NEW: " + p2 + "\n");
         if (!p1.isEmpty() && !p2.isEmpty()) {
             Set<Point> set1 = new LinkedHashSet<>(p1);
             Set<Point> set2 = new LinkedHashSet<>(p2);
